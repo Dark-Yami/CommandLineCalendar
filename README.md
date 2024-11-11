@@ -1,7 +1,7 @@
 # CommandLineCalendar
 
-  Overview & Purpose of Project
-This project is a command-line-based calendar application, built in C#, Python, and JavaScript, that allows users to manage events in a local, offline environment. Users can view a monthly calendar, add events to specific dates, set reminders for upcoming events, and save all data in a local file, which makes it a lightweight and accessible tool for basic personal scheduling needs. The purpose of this project is to provide a simple yet functional calendar system that operates in the command line, eligible for learning file management, date handling, and basic UI in each language. It offers practical experience in building interactive CLI applications, working with local storage, and handling reminders for event-based applications.
+ Project description
+This project is a command-line-based calendar application, built in three different programming laguages C#, Python, and JavaScript. Using the calendar it is possible to see the dates, add events to certain dates, reminders, which is excellent for personal scheduling needs. It will save such data in local storage which makes it usable in offline environment.
   
   Project Goals
 1.	Event Management: Provide a way for users to add, view, edit, and delete events associated with specific dates.
