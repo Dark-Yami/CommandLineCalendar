@@ -1,0 +1,17 @@
+[
+  {
+    "event": "prekosutra",
+    "date": "2025-01-05",
+    "remindOn": "2025-01-03"
+  },
+  {
+    "event": "tomorrow",
+    "date": "2025-01-04",
+    "remindOn": "2025-01-03"
+  },
+  {
+    "event": "presentation",
+    "date": "2025-01-06",
+    "remindOn": "2025-01-03"
+  }
+]
