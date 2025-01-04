@@ -41,14 +41,14 @@ function isValidNumber(number) {
 }
 
 function viewCalendar(month, year){
-    const months = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
     const firstDay = (new Date(year, month-1, 1).getDay() + 6) % 7;
     const totalDays = new Date(year, month, 0).getDate();
     let calendar = "";
     const events = loadEvents();
     let eventDates = events.map(event => new Date(event["Date: "]))
-                           .filter(eventDate => eventDate.getMonth() === month-1 && eventDate.getFullYear() === year)
+                           .filter(eventDate => eventDate.getMonth() === Number(month)-1 && eventDate.getFullYear() === Number(year))
                            .map(eventDate => eventDate.getDate());
     for(let day=0; day < firstDay; day++) {
         calendar += "    ";
@@ -60,7 +60,7 @@ function viewCalendar(month, year){
             calendar += "\n";
         }
     }
-    console.log("------" + months[Number(month)] + ", " + year + "------");
+    console.log("------" + months[Number(month)-1] + ", " + year + "------");
     console.log(daysOfWeek.join(" "));
     console.log(calendar);
 }
@@ -183,7 +183,6 @@ function setReminder(event, period) {
                         answer.toLowerCase();
                         if (answer === "y") {
                             reminders[existingIndex] = reminder;
-                            reminders.push(reminder);
                             saveReminders(reminders);
                             if (saveReminders(reminders)) {
                                 console.log(`Reminder for ${eventDescription} is set.`);
@@ -276,9 +275,6 @@ function loadReminders() {
 }
 
 function displayMenu(){
-    console.log("----Welcome to the Calendar!----");
-    const today = new Date();
-    console.log(`Today is ${today.getDate()}.${today.getMonth()+1}.${today.getFullYear()}.`);
     console.log("----Calendar Menu----");
     console.log("1. View Monthly Calendar");
     console.log("2. Event Manager");
@@ -440,5 +436,7 @@ function displayMenu(){
         }
     });
 }
-
+console.log("----Welcome to the Calendar!----");
+const todaysDate = new Date();
+console.log(`Today is ${todaysDate.getDate()}.${todaysDate.getMonth()+1}.${todaysDate.getFullYear()}.`);
 displayMenu();
