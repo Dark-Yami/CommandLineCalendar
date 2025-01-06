@@ -312,10 +312,17 @@ function displayMenu(){
                     switch(option) {
                         case "1":
                             rl.question("Event date (YYYY-MM-DD): ", (date) => {
-                                if (checkDate(date)) {
+                                if (checkDate(date) && date != null) {
                                     rl.question("Event description: ", (event) => {
-                                    addEvent(date, event);
-                                    displayMenu();
+                                        if (event != "") {
+                                            addEvent(date, event);
+                                            displayMenu();
+                                        }
+                                        else {
+                                            console.log("Invalid input. Please enter event name.");
+                                            displayMenu();
+                                        }
+                                        
                                     });
                                 }
                                 else {
@@ -343,10 +350,12 @@ function displayMenu(){
                                     else {
                                         if (num > 0 && num <= events.length) {
                                             rl.question("Event date (YYYY-MM-DD): ", (newDate) => {
-                                                if (checkDate(newDate)) {
+                                                if (checkDate(newDate) && newDate != null) {
                                                     rl.question("Event description: ", (newEvent) => {
-                                                    editEvent(Number(num), newDate, newEvent);
-                                                    displayMenu();
+                                                        if (newEvent != "") {
+                                                            editEvent(Number(num), newDate, newEvent);
+                                                            displayMenu();
+                                                        }
                                                     });
                                                 }
                                                 else {
