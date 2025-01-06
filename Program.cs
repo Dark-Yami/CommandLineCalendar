@@ -26,8 +26,8 @@ public class CalendarApp
             Console.WriteLine("----Welcome to the Calendar!----");
             Console.WriteLine($"Today is: {DateTime.Now:dd/MM/yyyy}");
             Console.WriteLine("----Calendar Menu----");
-            Console.WriteLine("1. Event Manager");
-            Console.WriteLine("2. View Monthly Calendar");
+            Console.WriteLine("1. View Monthly Calendar");
+            Console.WriteLine("2. Event Manager");
             Console.WriteLine("3. Set Reminders");
             Console.WriteLine("4. Exit");
  
@@ -35,10 +35,10 @@ public class CalendarApp
             switch (choice)
             {
                 case 1:
-                    EventManager();
+                    ViewCalendar();
                     break;
                 case 2:
-                    ViewCalendar();
+                    EventManager();
                     break;
                 case 3:
                     ReminderManager();
