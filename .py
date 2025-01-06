@@ -97,7 +97,7 @@ def setReminder():
 
         events[date][event_name]["reminders"].append(reminder_time.strftime('%Y-%m-%d'))
         save_events() 
-        print(f"Reminder set successfully for '{event_name}' on {date}: {reminder_time}")
+        print(f"Reminder set successfully for '{event_name}'")
 
     except (ValueError, IndexError) as e:
         print(f"Error: {e}")
@@ -119,11 +119,11 @@ def reminders_soon():
                         print(f"Invalid reminder format: {reminder}")
 
     if upcoming:
-        print("\n Upcoming events in the next seven days:")
+        print("\nUpcoming events in the next seven days:")
         for event in upcoming:
             print(event)
     else:
-        print(" No events in the next seven days")
+        print("No events in the next seven days")
 
 
 def eventManager():
@@ -137,39 +137,30 @@ def eventManager():
         return
     today = datetime.now().date()
 
-    event_managed = input("Enter the date in the format of year-month-day: ")
-    try:
-        event_date= datetime.strptime(event_managed, "%Y-%m-%d").date()  
-        if event_date<today:
-           raise ValueError
-    except ValueError:
-        print("Invalid date input or event is in past")
-        return
     if actionButton == "1":
+        event_managed = input("Enter the date in the format of year-month-day: ")
+        try:
+            event_date = datetime.strptime(event_managed, "%Y-%m-%d").date()
+            if event_date < today:
+                raise ValueError
+        except ValueError:
+            print("Invalid date input or event is in past.")
+            return
+
         nameOfEvent = input("Type the name of the event: ")
-        description = ""
         if event_managed not in events:
             events[event_managed] = {}
-        events[event_managed][nameOfEvent] = {"description": description}
-        save_events()  
+        save_events()
         print("Event added successfully!")
+
     elif actionButton == "2":
-        event_name = input("Type the name of the event to delete: ")
-        if event_managed in events and event_name in events[event_managed]:
-            del events[event_managed][event_name]
-            if not events[event_managed]:  
-                del events[event_managed]
-            save_events()
-            print("Event deleted successfully!")
-        else:
-            print("Event not found!")
+      deleteEvent()
+
     elif actionButton == "3":
         event_name = input("Type the name of the event to edit: ")
         if event_managed in events and event_name in events[event_managed]:
             new_name = input("Enter the new name of the event: ")
-            description = input("Enter the new description of the event: ")
             del events[event_managed][event_name]
-            events[event_managed][new_name] = {"description": description}
             save_events() 
             print("Event updated successfully!")
         else:
@@ -183,8 +174,41 @@ def vievEvents():
         for date, event_details in sorted(events.items()):
             print(f"Date: {date}")
             for event_name, details in event_details.items():
-                print(f"  {event_count}. {event_name}: {details.get('description', 'No description')}" )
+                print(f"  {event_count}. {event_name}" )
                 event_count += 1
+def deleteEvent():
+    if not events:
+        print("No events available to delete.")
+        return
+
+    print("Select the event to delete: ")
+    event_list = []
+    event_count = 1
+
+    for date, event_details in sorted(events.items()):
+        for event_name in event_details.keys():
+            print(f"{event_count}. {event_name} on {date}")
+            event_list.append((date, event_name))
+            event_count += 1
+
+    try:
+        event_choice = int(input("Enter the number of the event you want to delete: "))
+        if event_choice < 1 or event_choice > len(event_list):
+            raise ValueError("Invalid choice.")
+
+        selected_event = event_list[event_choice - 1]
+        date = selected_event[0]
+        event_name = selected_event[1]
+
+        del events[date][event_name]
+        if not events[date]: 
+            del events[date]
+
+        save_events()
+        print(f"Event '{event_name}' on {date} deleted successfully!")
+
+    except (ValueError, IndexError) as e:
+        print(f"Error: {e}")
 
 def main():
     """Main function to display the menu and handle user choices."""
