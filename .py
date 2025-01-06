@@ -1,9 +1,7 @@
 import calendar
 from datetime import datetime, timedelta
-from email.policy import default
 import json
 import os
-from sched import Event
 
 EVENTS_FILE = 'events.json'
 
