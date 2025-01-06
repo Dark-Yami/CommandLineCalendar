@@ -1,8 +1,8 @@
-﻿ 
+ 
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
-using System.Linq.Expressions;
+using System.Linq.Expressions;      
 using System.Text.Json;
  
  
@@ -31,8 +31,7 @@ public class CalendarApp
             Console.WriteLine("3. Set Reminders");
             Console.WriteLine("4. Exit");
  
-            int choice = Convert.ToInt32(Console.ReadLine()); // This might throw an exception if input is not an integer
- 
+            int choice = Convert.ToInt32(Console.ReadLine()); 
             switch (choice)
             {
                 case 1:
@@ -56,12 +55,10 @@ public class CalendarApp
         }
         catch (FormatException ex)
         {
-            // Handles invalid input format (non-integer input for choice)
             Console.WriteLine($"Invalid input. Please enter a valid number. Error: {ex.Message}");
         }
         catch (Exception ex)
         {
-            // Catches any other general exceptions
             Console.WriteLine($"An error occurred: {ex.Message}");
         }
     }
@@ -69,9 +66,8 @@ public class CalendarApp
  
 static void DisplayRemindersBeforeExit()
 {
-    // Display reminders before exiting (without actually calling the full ReminderManager function)
     DateTime currentDate = DateTime.Now.Date;
-    int reminderPeriod = 7; // Default reminder period is 7 days
+    int reminderPeriod = 7; 
     DateTime reminderDate = currentDate.AddDays(reminderPeriod);
  
     List<CalendarEvent> upcomingEvents = events.Where(e => e.Date >= currentDate && e.Date <= reminderDate).ToList();
@@ -142,7 +138,7 @@ static void DisplayRemindersBeforeExit()
    static void ViewCalendar()
 {
     Console.Write("Enter date (yyyy-MM): ");
-    if (DateTime.TryParse(Console.ReadLine(), out DateTime date))
+    if (DateTime.TryParse(Console.ReadLine(), out DateTime date)) 
     {
         int year = date.Year;
         int month = date.Month;
@@ -157,33 +153,27 @@ static void DisplayRemindersBeforeExit()
 
 static void DisplayCalendar(int year, int month)
 {
-    // Display header
     Console.Clear();
     Console.WriteLine($"Calendar for {month}/{year}\n");
     Console.WriteLine("Mon Tue Wed Thu Fri Sat Sun");
 
-    // Get the first day of the month and the number of days in the month
     DateTime firstDay = new DateTime(year, month, 1);
     int daysInMonth = DateTime.DaysInMonth(year, month);
 
-    // Determine the day of the week for the first day
-    int startDay = ((int)firstDay.DayOfWeek + 6) % 7;
+    int startDay = ((int)firstDay.DayOfWeek + 6) % 7;  
 
-    // Print initial spaces for days before the first day
     for (int i = 0; i < startDay; i++)
     {
-        Console.Write("    "); // 4 spaces for each day
+        Console.Write("    "); 
     }
 
-    // Print the days of the month with "*" if there is an event
     for (int day = 1; day <= daysInMonth; day++)
     {
         DateTime currentDay = new DateTime(year, month, day);
-        string dayString = GetDateWithEventMarker(currentDay); // Check if there is an event on this day
+        string dayString = GetDateWithEventMarker(currentDay); 
 
-        Console.Write($"{dayString,3} "); // Right-align day numbers in 3 spaces
+        Console.Write($"{dayString,3} "); 
 
-        // Move to the next line after Saturday
         if ((startDay + day) % 7 == 0)
         {
             Console.WriteLine();
@@ -192,18 +182,16 @@ static void DisplayCalendar(int year, int month)
     Console.WriteLine();
 }
 
-// Function to check if there is an event on a specific date and return the date with a "*" if there is an event
 static string GetDateWithEventMarker(DateTime date)
 {
-    // Check if there is an event on the given date(.date deletes time so only ymd)
     foreach (var eventItem in events)
     {
         if (eventItem.Date.Date == date.Date)
         {
-            return date.Day.ToString() + " *"; // Add "*" to the date if there is an event
+            return date.Day.ToString() + " *"; 
         }
     }
-    return date.Day.ToString(); // Return the date without "*" if no event
+    return date.Day.ToString(); 
 }
 
  
@@ -214,23 +202,23 @@ static void AddEvent()
         try
         {
             Console.Write("Enter date (yyyy-MM-dd): ");
-            string dateInput = Console.ReadLine(); // Read user input for date
-            if (DateTime.TryParse(dateInput, out DateTime date)) // Validate date format
+            string? dateInput = Console.ReadLine(); 
+            if (DateTime.TryParse(dateInput, out DateTime date)) 
             {
                 Console.Write("Enter event name: ");
-                string? description = Console.ReadLine(); // Read user input for description
+                string? description = Console.ReadLine(); 
  
-                if (string.IsNullOrEmpty(description)) // Check if the description is not empty
+                if (string.IsNullOrEmpty(description)) 
                 {
-                    Console.WriteLine("Event description cannot be empty, please try again.");
-                    continue; // Skip the rest of the loop and ask for the event description again
+                    Console.WriteLine("Event name cannot be empty, please try again.");
+                    continue; 
                 }
  
-                // Add event to the list
+                
                 events.Add(new CalendarEvent { Date = date, Description = description });
  
                 Console.WriteLine("Event added successfully!");
-                break; // Exit the loop after a successful event addition
+                break; 
             }
             else
             {
@@ -274,7 +262,7 @@ static void AddEvent()
                     events.Remove(eventToDelete);
  
                     Console.WriteLine("Event deleted successfully!");
-                    SaveEvents(); // Save changes to the JSON file
+                    SaveEvents(); 
                     break;
                 }
                 else
@@ -291,7 +279,7 @@ static void AddEvent()
  
         static void ChangeEvent()
 {
-    while (true) // Keep asking until the event is successfully changed
+    while (true) 
     {
         Console.Write("Enter date to view events for modification (yyyy-MM-dd): ");
         if (DateTime.TryParse(Console.ReadLine(), out DateTime date))
@@ -301,7 +289,7 @@ static void AddEvent()
             if (eventsForDate.Count == 0)
             {
                 Console.WriteLine("No events found for this date.");
-                return; // Exit if no events found for the date
+                return; 
             }
  
             Console.WriteLine($"Events on {date.ToShortDateString()}:");
@@ -330,7 +318,7 @@ static void AddEvent()
                             Console.Write("Enter new date (yyyy-MM-dd): ");
                             if (DateTime.TryParse(Console.ReadLine(), out DateTime newDate))
                             {
-                                // Check if the new date already has an event
+                                
                                 if (events.Any(e => e.Date.Date == newDate.Date))
                                 {
                                     Console.WriteLine("There is already an event on this date. Please choose another date.");
@@ -338,26 +326,26 @@ static void AddEvent()
                                 else
                                 {
                                     eventToChange.Date = newDate;
-                                    validChange = true; // Set to true if the date is valid and unique
+                                    validChange = true; 
                                 }
                             }
                             else
                             {
-                                Console.WriteLine("Invalid date format, please try agsdasdasdasdaasdain.");
+                                Console.WriteLine("Invalid date format, please try again.");
                             }
                         }
                     }
  
                     if (changeOption == 2 || changeOption == 3)
                     {
-                        while (true) // Loop until a valid description is entered
+                        while (true) 
                         {
                             Console.Write("Enter new Name: ");
                             string? newDescription = Console.ReadLine();
                             if (!string.IsNullOrWhiteSpace(newDescription))
                             {
                                 eventToChange.Description = newDescription;
-                                break; // Exit the loop once the description is valid
+                                break; 
                             }
                             else
                             {
@@ -367,8 +355,8 @@ static void AddEvent()
                     }
  
                     Console.WriteLine("Event updated successfully!");
-                    SaveEvents(); // Save changes to the JSON file
-                    break; // Exit the loop after the event has been successfully updated
+                    SaveEvents();
+                    break; 
                 }
                 else
                 {
@@ -405,16 +393,16 @@ static void ViewEventsForDate()
             if (eventsForDate.Count == 0)
             {
                 Console.WriteLine("No events found for this date.");
-                break; // Exit the loop if no events are found
+                break; 
             }
             else
             {
                 Console.WriteLine($"Events on {date.ToShortDateString()}:");
                 foreach (var calendarEvent in eventsForDate)
                 {
-                    Console.WriteLine($"- {calendarEvent.Description}"); // List all events for that date
+                    Console.WriteLine($"- {calendarEvent.Description}"); 
                 }
-                break; // Exit the loop after displaying the events for the date
+                break; 
             }
         }
         else
@@ -428,7 +416,7 @@ static void ViewEventsForDate()
         static void ReminderManager()
         {
             Console.Write("Enter custom reminder period in days (or press Enter for default 7 days): ");
-            string input = Console.ReadLine();
+            string? input = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(input) && int.TryParse(input, out int customPeriod))
             {
                 reminderPeriod = customPeriod;
@@ -487,8 +475,6 @@ static void ViewEventsForDate()
                     Console.WriteLine($"Error saving events: {e.Message}");
                 }
         }
- 
- 
  
  
  
